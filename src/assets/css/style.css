@@ -71,9 +71,11 @@
     display: block;
 }
 
-.start{
-   /* background: linear-gradient(90deg, #3843D2 0%, #192184 100%);*/
-    background:#192184 ;
+
+
+html, .start, #root {
+    background:#192184;
+    height: 100vh;
 }
 .loginPG{
     margin-top: 30%;
@@ -101,6 +103,7 @@
     background:#111769;
     color: #FFF;
 }
+
 .cusbtn2 {
     display: inline-block;
     font-weight: 400;
@@ -126,6 +129,18 @@
     margin-top: 20px;
     border-radius: 30px;
 }
+
+.password-group {
+    position: relative;
+}
+
+.eye {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50px;
+}
+
 .lbtm a{
     text-decoration: underline;
     color: inherit;
