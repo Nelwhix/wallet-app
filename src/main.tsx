@@ -5,6 +5,7 @@ import { router } from './router'
 
 import './assets/css/all.css'
 import './assets/css/style.css'
+import './assets/scss/styles.scss'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
