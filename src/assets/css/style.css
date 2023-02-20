@@ -56,9 +56,6 @@
     font-style: normal;
     font-weight: 400;
     font-variant-ligatures: common-ligatures;
-    max-width: 480px;
-    height: 100vh;
-    margin: 0 auto;
     background-color: #F5F8FE;
     color: #62636f;
   }
@@ -73,13 +70,10 @@
 
 
 
-html, .start, #root {
+.start{
     background:#192184;
-    height: 100vh;
 }
-.loginPG{
-    margin-top: 30%;
-}
+
 .text-white{
     color: #FFF;
 }
@@ -217,6 +211,22 @@ a {
 a:hover {
     color: #161D70;
     text-decoration: underline;
+}
+
+.lottie {
+    margin: auto;
+    margin-bottom: 15px
+}
+
+#login {
+    width: 480px;
+    margin-top: 8%
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
