@@ -1,13 +1,10 @@
 import { FormEvent, useState } from 'react'
-import Eye from '../components/Eye'
+import Password from '../components/Password'
 import { router } from '../router'
+import apiClient from '../axios'
+
 
 export default function Login() {
-    const [visible, setVisible] = useState(false)
-
-    function toggleEye() {
-        setVisible(!visible)
-    }
     if (localStorage.getItem('token')) {
         router.navigate({
             from: '/login',
@@ -15,9 +12,20 @@ export default function Login() {
         })
     }
 
-    function handleSubmit(event: FormEvent) {
-        event.preventDefault()
-        console.log("processing")
+    function handleSubmit(e: FormEvent) {
+        e.preventDefault()
+
+        const form = new FormData(e.target as HTMLFormElement)
+
+        apiClient.post('/open/auth/login', form)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((err) => {
+                if (err.response) {
+                    console.log(err.response.data.message)
+                }
+            })
     }
 
     return (
@@ -33,16 +41,12 @@ export default function Login() {
                                 <br />
                                 <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="formGroupExampleInput" className="form-label"> Username</label>
-                                    <input type="text" className=" cus-input" id="" placeholder="" />
+                                    <label htmlFor="username" className="form-label"> Username</label>
+                                    <input type="text" className="cus-input" id="username" name="username" />
                                 </div>
-                                <div className="mb-3 password-group">
-                                    <label htmlFor="formGroupExampleInput2" className="form-label">Password</label>
-                                    <input type="password" className="cus-input" id="" placeholder="" />
-                                    <Eye onEyeClick={toggleEye} show={visible}/>                                                  
-                                </div>
+                                <Password />
                                 <div className="form-group mt-3 mb-3 text-end lbtm">
-                                    <a href="#">   Forgot Password? </a>
+                                    <a href="#">Login as guest</a>
                                 </div>
                                 <div className="form-group mt-3 mb-3 text-center">
                                     <button type="submit" className="cusbtn2">Login &nbsp;&nbsp; <i className="fa fa-arrow-right"></i></button>
