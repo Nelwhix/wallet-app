@@ -17,7 +17,12 @@ export default function Login() {
 
         const form = new FormData(e.target as HTMLFormElement)
 
-        apiClient.post('/open/auth/login', form)
+        const data = {
+            username: form.get('username'),
+            password: form.get('password')
+        }
+
+        apiClient.post('/open/auth/login', data)
             .then((res) => {
                 console.log(res)
             })
