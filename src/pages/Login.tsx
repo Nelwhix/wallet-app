@@ -2,16 +2,11 @@ import { FormEvent, useState } from 'react'
 import Password from '../components/Password'
 import { router } from '../router'
 import apiClient from '../axios'
+import { Link } from '@tanstack/react-router'
+import FormInput from '../components/FormInput'
 
 
 export default function Login() {
-    if (localStorage.getItem('token')) {
-        router.navigate({
-            from: '/login',
-            to: '/'
-        })
-    }
-
     function handleSubmit(e: FormEvent) {
         e.preventDefault()
 
@@ -45,14 +40,8 @@ export default function Login() {
                                 <h4 className="text-center"> <i className="fa fa-wallet"></i> wallet </h4>
                                 <br />
                                 <form onSubmit={handleSubmit}>
-                                <div className="mb-3">
-                                    <label htmlFor="username" className="form-label"> Username</label>
-                                    <input type="text" className="cus-input" id="username" name="username" />
-                                </div>
+                                <FormInput label="Username" type="text"/>
                                 <Password />
-                                <div className="form-group mt-3 mb-3 text-end lbtm">
-                                    <a href="#">Login as guest</a>
-                                </div>
                                 <div className="form-group mt-3 mb-3 text-center">
                                     <button type="submit" className="cusbtn2">Login &nbsp;&nbsp; <i className="fa fa-arrow-right"></i></button>
                                 </div>
@@ -60,7 +49,7 @@ export default function Login() {
                                 </form>
                              
                                 <div className="form-group mt-3 mb-3 text-center lbtm">
-                                    Don't have an account? <a href="#">  Create Account </a>
+                                    Don't have an account? <Link to="/signup">  Create Account </Link>
                                 </div>
 
                             </div>

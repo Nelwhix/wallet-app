@@ -3,12 +3,12 @@ import Lottie from 'react-lottie-player'
 import walletJson from '../assets/json/wallet-anima.json'
 
 export default function Dashboard() {
-    // if (!localStorage.getItem('token')) {
-    //    router.navigate({
-    //     from: '/',
-    //     to: '/login'
-    //    })
-    // }
+    if (!localStorage.getItem('token')) {
+       router.navigate({
+        from: '/',
+        to: '/login'
+       })
+    }
     return <div className="wrapper">
         <div id="homepage">
             <div className="topBG">
