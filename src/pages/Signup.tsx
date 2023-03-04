@@ -36,7 +36,13 @@ export default function Signup() {
 
         apiClient.post('/open/reg/start', data)
             .then((res) => {
-                console.log(res)
+                apiClient.post('/open/reg/conclude', {
+                    olid: res.data.info.otp.olid,
+                    ulid: res.data.info.user.ulid,
+                    code: res.data.info.otp.code
+                })
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err))
             })
             .catch((err) => {
                 if (err.response) {
@@ -72,7 +78,7 @@ export default function Signup() {
                                 </form>
 
                                 <div className="form-group mt-3 mb-3 text-center lbtm">
-                                    Don't have an account? <Link to="/signup">  Create Account </Link>
+                                    Already have an account? <Link to="/login"> Sign in </Link>
                                 </div>
 
                             </div>

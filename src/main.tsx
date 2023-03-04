@@ -6,6 +6,7 @@ import { router } from './router'
 import './assets/scss/styles.scss'
 import './assets/css/all.css'
 import './assets/css/style.css'
+import './assets/css/custom.css'
 import './assets/fonts/font-awesome/css/font-awesome.min.css'
 import './assets/js/all.min.js'
 

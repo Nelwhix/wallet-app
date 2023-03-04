@@ -1,9 +1,9 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent } from 'react'
 import Password from '../components/Password'
-import { router } from '../router'
 import apiClient from '../axios'
 import { Link } from '@tanstack/react-router'
 import FormInput from '../components/FormInput'
+import { router } from '../router'
 
 
 export default function Login() {
@@ -13,13 +13,19 @@ export default function Login() {
         const form = new FormData(e.target as HTMLFormElement)
 
         const data = {
-            username: form.get('username'),
-            password: form.get('password')
+            username: form.get('Username'),
+            password: form.get('Password')
         }
 
         apiClient.post('/open/auth/login', data)
             .then((res) => {
-                console.log(res)
+                localStorage.setItem('token', res.data.info.token)
+                localStorage.setItem('user', JSON.stringify(res.data.info.user))
+
+                router.navigate({
+                    from: '/login',
+                    to: '/'
+                })
             })
             .catch((err) => {
                 if (err.response) {
@@ -41,7 +47,7 @@ export default function Login() {
                                 <br />
                                 <form onSubmit={handleSubmit}>
                                 <FormInput label="Username" type="text"/>
-                                <Password />
+                                <Password label="Password" />
                                 <div className="form-group mt-3 mb-3 text-center">
                                     <button type="submit" className="cusbtn2">Login &nbsp;&nbsp; <i className="fa fa-arrow-right"></i></button>
                                 </div>
