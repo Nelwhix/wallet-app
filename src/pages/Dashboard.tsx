@@ -1,6 +1,10 @@
 import { router } from "../router"
 import Lottie from 'react-lottie-player'
 import walletJson from '../assets/json/wallet-anima.json'
+import apiClient from "../axios"
+import { formatMoney } from "../helpers"
+import { useEffect, useState } from "react"
+
 
 export default function Dashboard() {
     if (!localStorage.getItem('token')) {
@@ -9,6 +13,27 @@ export default function Dashboard() {
         to: '/login'
        })
     }
+
+    const [wallets, setWallets] = useState({
+        primary: {
+            currency: 0,
+            balance: 0
+        }
+    })
+
+    const fetchWallets = async () => {
+        try {
+            const response = await apiClient.get('/core/welcome')
+            setWallets(response.data.info.wallets)
+        } catch(error) {
+            console.error(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchWallets()
+    }, [])
+
     return <div className="wrapper">
         <div id="homepage">
             <div className="topBG">
@@ -17,7 +42,7 @@ export default function Dashboard() {
                     <div className="wallet-card">
                         <div className="wallet-am">
                             <Lottie className="lottie" loop animationData={walletJson} play style={{ width: 80, height: 80}}/>
-                            <h3> ₦150,000,000,000.08 </h3>
+                            <h3> {formatMoney(wallets.primary.currency, wallets.primary.balance)} </h3>
                             <h6> Total Bal in Naira Wallet </h6>
                         </div>
                         <div className="wallet-bm">

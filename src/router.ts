@@ -10,6 +10,7 @@ const indexRoute = new Route({
     path: '/',
     component: Dashboard
 })
+
 const loginRoute = new Route({ 
     getParentRoute: () => rootRoute, 
     path: '/login',
