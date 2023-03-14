@@ -13,5 +13,19 @@ const apiClient = axios.create({
     }
 })
 
+// apiClient.interceptors.response
+//     .use(res => {return res},
+//         async (err) => {
+//             if (err.response.status === 401) {
+//                 try {
+//                     const response = await apiClient.get('/auth/refresh')
+//                     localStorage.setItem('token', response.data.info.token)
+//                 } catch (err) {
+//                     console.error(err)
+//                 } 
+//             }
+//         }   
+//     )
+
 
 export default apiClient

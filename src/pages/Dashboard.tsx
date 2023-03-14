@@ -4,6 +4,8 @@ import walletJson from '../assets/json/wallet-anima.json'
 import apiClient from "../axios"
 import { formatMoney } from "../helpers"
 import { useEffect, useState } from "react"
+import TransactionCard from "../components/TransactionCard"
+import Transactions from "../components/Transactions"
 
 
 export default function Dashboard() {
@@ -17,14 +19,26 @@ export default function Dashboard() {
     const [wallets, setWallets] = useState({
         primary: {
             currency: 0,
-            balance: 0
+            balance: 0,
+            wlid: ""
         }
     })
+    const [transactions, setTransactions] = useState([])
 
     const fetchWallets = async () => {
         try {
             const response = await apiClient.get('/core/welcome')
             setWallets(response.data.info.wallets)
+            fetchTransactions(response.data.info.wallets.primary.wlid)
+        } catch(error) {
+            console.error(error)
+        }
+    }
+
+    const fetchTransactions = async (wlid: string) => {
+        try {
+            const response = await apiClient.get(`/transaction/fetch/${wlid}`)
+            setTransactions(response.data.data)
         } catch(error) {
             console.error(error)
         }
@@ -59,7 +73,7 @@ export default function Dashboard() {
 
                                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <li><a className="dropdown-item" href="#">
-                                        <h5> $30,000 <br /><small> Dallar Wallet </small> </h5>
+                                        <h5> $30,000 <br /><small> Dollar Wallet </small> </h5>
                                     </a></li>
                                     <li><a className="dropdown-item" href="#">
                                         <h5> C30,000 <br /><small> Coins Wallet </small> </h5>
@@ -77,65 +91,7 @@ export default function Dashboard() {
                     <div className="page-content">
                         <div className="transactions">
                             <div className="clearfix">
-                                <ul className="trans clearfix">
-                                    <a href="transaction-details.html">
-                                        <li><span className="t-img"> <i className="fa fa-angle-double-right"></i> </span></li>
-                                        <li> <h5> money for concert.. </h5>
-                                            <h6> Transfer &nbsp; ~  <small> 2 days ago </small> </h6>
-                                        </li>
-                                        <li> <h4 className="credit"> ₦150,000</h4> </li>
-                                    </a>
-                                </ul>
-
-                                <ul className="trans clearfix">
-                                    <a href="transaction-details.html">
-                                        <li><span className="t-img2"> <i className="fa fa-angle-double-left"></i> </span></li>
-                                        <li> <h5> Money for food in... </h5>
-                                            <h6> Recieve  &nbsp; ~  <small> 2 days ago </small> </h6>
-                                        </li>
-                                        <li> <h4 className="debit"> ₦-150,000</h4> </li>
-                                    </a>
-                                </ul>
-
-                                <ul className="trans clearfix">
-                                    <a href="transaction-details.html">
-                                        <li><span className="t-img"> <i className="fa fa-angle-double-right"></i> </span></li>
-                                        <li> <h5> money for concert.. </h5>
-                                            <h6> Transfer &nbsp; ~  <small> 2 days ago </small> </h6>
-                                        </li>
-                                        <li> <h4 className="credit"> ₦150,000</h4> </li>
-                                    </a>
-                                </ul>
-
-                                <ul className="trans clearfix">
-                                    <a href="transaction-details.html">
-                                        <li><span className="t-img2"> <i className="fa fa-angle-double-left"></i> </span></li>
-                                        <li> <h5> Money for food in... </h5>
-                                            <h6> Recieve  &nbsp; ~  <small> 2 days ago </small> </h6>
-                                        </li>
-                                        <li> <h4 className="debit"> ₦-150,000</h4> </li>
-                                    </a>
-                                </ul>
-
-                                <ul className="trans clearfix">
-                                    <a href="transaction-details.html">
-                                        <li><span className="t-img"> <i className="fa fa-angle-double-right"></i> </span></li>
-                                        <li> <h5> money for concert.. </h5>
-                                            <h6> Transfer &nbsp; ~  <small> 2 days ago </small> </h6>
-                                        </li>
-                                        <li> <h4 className="credit"> ₦150,000</h4> </li>
-                                    </a>
-                                </ul>
-
-                                <ul className="trans clearfix">
-                                    <a href="transaction-details.html">
-                                        <li><span className="t-img2"> <i className="fa fa-angle-double-left"></i> </span></li>
-                                        <li> <h5> Money for food in... </h5>
-                                            <h6> Recieve  &nbsp; ~  <small> 2 days ago </small> </h6>
-                                        </li>
-                                        <li> <h4 className="debit"> ₦-150,000</h4> </li>
-                                    </a>
-                                </ul>
+                                <Transactions transactions={transactions} />
                             </div>
                         </div>
                     </div>
