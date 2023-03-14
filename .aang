@@ -1,6 +1,0 @@
-git add .
-git commit
-git push -u
-npm run build
-npm run generate
-vercel

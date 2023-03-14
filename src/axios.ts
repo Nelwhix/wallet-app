@@ -5,8 +5,8 @@ const apiClient = axios.create({
     headers: {
         'X-Channel': 'api',
         'X-Timestamp': (Date.now()/1000).toFixed(0),
-        'X-Require': '01GRM0BX1NX1RTTKCRP0H9B3WH',
-        'X-Api-Key': '01GRM0H6RTXFTSA1KBJ4S403XP'
+        'X-Require': import.meta.env.VITE_PLATFORM_ID,
+        'X-Api-Key': import.meta.env.VITE_TUTU_API_KEY
     }
 })
 

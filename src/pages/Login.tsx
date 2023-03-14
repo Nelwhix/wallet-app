@@ -16,7 +16,7 @@ export default function Login() {
             username: form.get('Username'),
             password: form.get('Password')
         }
-
+        console.log(import.meta.env)
         apiClient.post('/open/auth/login', data)
             .then((res) => {
                 localStorage.setItem('token', res.data.info.token)
