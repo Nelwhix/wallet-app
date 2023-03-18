@@ -1,16 +1,19 @@
-import { router } from "../router"
 import Lottie from 'react-lottie-player'
 import walletJson from '../assets/json/wallet-anima.json'
 import apiClient from "../axios"
 import { formatMoney } from "../helpers"
 import { useEffect, useState } from "react"
-import TransactionCard from "../components/TransactionCard"
 import Transactions from "../components/Transactions"
-import {AxiosError} from "axios";
+import WalletDropDown from "../components/WalletDropdown"
 
 
 export default function Dashboard() {
     const [wallets, setWallets] = useState({
+        wallets: {
+            "fajofoajfoajfoajofa": {
+
+            }
+        },
         primary: {
             currency: 0,
             balance: 0,
@@ -25,12 +28,27 @@ export default function Dashboard() {
         type: 1
     }])
 
+    const [walletArray, setWalletArray] = useState([{
+        currency: 0,
+        name: "",
+        wlid: "",
+        balance: 0
+    }])
+
     const fetchWallets = async () => {
         try {
             const response = await apiClient.get('/core/welcome')
             setWallets(response.data.info.wallets)
             fetchTransactions(response.data.info.wallets.primary.wlid)
-        } catch(error) {
+
+            const result = []
+            result.push(response.data.info.wallets.primary)
+            for (let field in response.data.info.wallets.wallets) {
+                result.push(response.data.info.wallets.wallets[field])
+            }
+
+            setWalletArray(result)
+        } catch (error) {
             console.log(error)
         }
     }
@@ -39,7 +57,7 @@ export default function Dashboard() {
         try {
             const response = await apiClient.get(`/transaction/fetch/${wlid}`)
             setTransactions(response.data.data)
-        } catch(error) {
+        } catch (error) {
             console.error(error)
         }
     }
@@ -48,14 +66,13 @@ export default function Dashboard() {
         fetchWallets()
     }, [])
 
-    return <div className="wrapper">
-        <div  id="homepage">
+    return<div id="homepage">
             <div className="topBG">
                 <div className="container">
                     <h2 className="page-title"> Home </h2>
                     <div className="wallet-card">
                         <div className="wallet-am">
-                            <Lottie speed={0.5} className="lottie" loop animationData={walletJson} play style={{ width: 80, height: 80}}/>
+                            <Lottie speed={0.5} className="lottie" loop animationData={walletJson} play style={{ width: 80, height: 80 }} />
                             <h3> {formatMoney(wallets.primary.currency, wallets.primary.balance)} </h3>
                             <h6> Total Bal in Naira Wallet </h6>
                         </div>
@@ -71,17 +88,7 @@ export default function Dashboard() {
                                     <i className="fa fa-ellipsis-v"></i>
                                 </a>
 
-                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li><a className="dropdown-item" href="#">
-                                        <h5> $30,000 <br /><small> Dollar Wallet </small> </h5>
-                                    </a></li>
-                                    <li><a className="dropdown-item" href="#">
-                                        <h5> C30,000 <br /><small> Coins Wallet </small> </h5>
-                                    </a></li>
-                                    <li><a className="dropdown-item" href="#">
-                                        <h5> pts30,000 <br /><small>Points Wallet </small> </h5>
-                                    </a></li>
-                                </ul>
+                                <WalletDropDown data={walletArray} />
                             </div>
                         </div>
 
@@ -99,21 +106,4 @@ export default function Dashboard() {
             </div>
         </div>
 
-        
-    <nav>
-      <a className="nav-item active" href="index.html">
-        <i className="fa fa-home"></i><span>Home</span>
-      </a>
-      
-      <a className="nav-item " href="activity.html">
-        <i className="far fa-chart-bar"></i><span>Activity</span>
-      </a>
-      
-      <a className="nav-item" href="user.html">
-        <i className="far fa-user"></i><span>User</span>
-      </a>
-
-</nav>
-    </div>
-    
 }

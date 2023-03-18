@@ -1,12 +1,20 @@
 import { RootRoute, Route, ReactRouter } from '@tanstack/react-router'
+import layout from './layouts/layout'
+import Activity from './pages/Activity'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 
 let rootRoute = new RootRoute()
 
+const layoutRoute = new Route({
+    getParentRoute: () => rootRoute,
+    id: 'layout',
+    component: layout
+})
+
 const indexRoute = new Route({
-    getParentRoute: () => rootRoute, 
+    getParentRoute: () => layoutRoute, 
     path: '/',
     component: Dashboard
 })
@@ -23,10 +31,19 @@ const signUpRoute = new Route({
     component: Signup
 })
 
+const activityRoute = new Route({
+    getParentRoute: () => layoutRoute,
+    path: '/activity',
+    component: Activity
+})
+
 const routeTree = rootRoute.addChildren([
-    indexRoute,
     loginRoute,
-    signUpRoute
+    signUpRoute,
+    layoutRoute.addChildren([
+        indexRoute,
+        activityRoute
+    ]),
 ])
 
 export const router = new ReactRouter({ routeTree })
