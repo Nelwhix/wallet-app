@@ -13,19 +13,15 @@ const apiClient = axios.create({
     }
 })
 
-// apiClient.interceptors.response
-//     .use(res => {return res},
-//         async (err) => {
-//             if (err.response.status === 401) {
-//                 try {
-//                     const response = await apiClient.get('/auth/refresh')
-//                     localStorage.setItem('token', response.data.info.token)
-//                 } catch (err) {
-//                     console.error(err)
-//                 } 
-//             }
-//         }   
-//     )
+async function refreshTokens() {
+    try {
+        const res = await apiClient.get('/auth/refresh')
+        localStorage.setItem('token', res.data.info.token)
+    } catch (err) {
+        console.log(err)
+    }
+}
 
+setInterval(refreshTokens, import.meta.env.VITE_TOKEN_REFRESH_INTERVAL)
 
 export default apiClient

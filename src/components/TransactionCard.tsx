@@ -1,4 +1,4 @@
-export default function TransactionCard() {
+export default function TransactionCard({ data }: TransData) {
 
     return <ul className="trans clearfix">
         <a href="transaction-details.html">
@@ -10,4 +10,8 @@ export default function TransactionCard() {
         </a>
     </ul>
 
+}
+
+type TransData = {
+    data: never
 }

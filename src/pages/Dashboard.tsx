@@ -6,16 +6,10 @@ import { formatMoney } from "../helpers"
 import { useEffect, useState } from "react"
 import TransactionCard from "../components/TransactionCard"
 import Transactions from "../components/Transactions"
+import {AxiosError} from "axios";
 
 
 export default function Dashboard() {
-    if (!localStorage.getItem('token')) {
-       router.navigate({
-        from: '/',
-        to: '/login'
-       })
-    }
-
     const [wallets, setWallets] = useState({
         primary: {
             currency: 0,
@@ -23,7 +17,13 @@ export default function Dashboard() {
             wlid: ""
         }
     })
-    const [transactions, setTransactions] = useState([])
+    const [transactions, setTransactions] = useState([{
+        title: "",
+        tnlid: "",
+        added: new Date(),
+        value: 0,
+        type: 1
+    }])
 
     const fetchWallets = async () => {
         try {
@@ -31,7 +31,7 @@ export default function Dashboard() {
             setWallets(response.data.info.wallets)
             fetchTransactions(response.data.info.wallets.primary.wlid)
         } catch(error) {
-            console.error(error)
+            console.log(error)
         }
     }
 
@@ -49,13 +49,13 @@ export default function Dashboard() {
     }, [])
 
     return <div className="wrapper">
-        <div id="homepage">
+        <div  id="homepage">
             <div className="topBG">
                 <div className="container">
                     <h2 className="page-title"> Home </h2>
                     <div className="wallet-card">
                         <div className="wallet-am">
-                            <Lottie className="lottie" loop animationData={walletJson} play style={{ width: 80, height: 80}}/>
+                            <Lottie speed={0.5} className="lottie" loop animationData={walletJson} play style={{ width: 80, height: 80}}/>
                             <h3> {formatMoney(wallets.primary.currency, wallets.primary.balance)} </h3>
                             <h6> Total Bal in Naira Wallet </h6>
                         </div>
@@ -91,7 +91,7 @@ export default function Dashboard() {
                     <div className="page-content">
                         <div className="transactions">
                             <div className="clearfix">
-                                <Transactions transactions={transactions} />
+                                <Transactions transactions={transactions.slice(0, 10)} />
                             </div>
                         </div>
                     </div>
@@ -115,4 +115,5 @@ export default function Dashboard() {
 
 </nav>
     </div>
+    
 }
