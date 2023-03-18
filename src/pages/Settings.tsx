@@ -1,4 +1,3 @@
-import { router } from "../router"
 import { ChangeEvent, useState } from "react"
 import { Link } from "@tanstack/react-router"
 
@@ -11,6 +10,8 @@ import { Link } from "@tanstack/react-router"
 // }
 
 export default function Settings() {
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
+    
 
     function logout() {
         localStorage.removeItem('token')
@@ -43,9 +44,12 @@ export default function Settings() {
                             <div className="avatar-preview">
                                 <div id="imagePreview" style={avatarStyle}>
                                 </div>
+                               
                             </div>
+                            <p className="mt-2" style={{marginLeft: '20px'}}>@{user.username}</p>
                         </div>
                     </div>
+                    
 
                     <div className="user-setting">
                         <div className="clearfix">
@@ -57,7 +61,7 @@ export default function Settings() {
                                     <a href="#"> <i className="fa fa-wallet"></i>&nbsp;&nbsp; Wallet settings </a>
                                 </li>
                                 <li>
-                                    <Link to="/login" onClick={logout}> <i className="fa fa-power-off"></i>&nbsp;&nbsp; LogOut </Link>
+                                    <Link to="/login" onClick={logout}> <i className="fa fa-power-off"></i>&nbsp;&nbsp; Log out </Link>
                                 </li>
                             </ul>
                         </div>

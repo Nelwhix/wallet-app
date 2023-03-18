@@ -1,12 +1,34 @@
 import { Link } from "@tanstack/react-router"
 import apiClient from '../axios'
-import { FormEvent } from "react"
+import { FormEvent, useState } from "react"
 import Password from "../components/Password"
 import FormInput from "../components/FormInput"
+import CustomAlert from "../components/CustomAlert"
+import Progress from "../components/Progress"
 
 export default function Signup() {
+    const [state, setState] = useState({
+        isAnimating: false,
+        key: 0
+    })
+
+    function startLoader() {
+        setState({
+            isAnimating: true,
+            key: 1
+        })
+    }
+
+    function stopLoader() {
+        setState({
+            isAnimating: false,
+            key: 0
+        })
+    }
+
     function handleSubmit(e: FormEvent) {
         e.preventDefault()
+        startLoader()
 
         const form = new FormData(e.target as HTMLFormElement)
 
@@ -41,18 +63,33 @@ export default function Signup() {
                     ulid: res.data.info.user.ulid,
                     code: res.data.info.otp.code
                 })
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err))
+                .then(() => {
+                    stopLoader()
+                    setMsg("Account created successfully")
+                    setShowAlert(true)
+                    setVariant("success")
+                })
+                .catch((err) => {
+                    stopLoader()
+                    console.log(err)
+                })
             })
             .catch((err) => {
+                stopLoader()
                 if (err.response) {
-                    console.log(err.response.data.message)
+                    setMsg(err.response.data.message)
+                    setShowAlert(true)
                 }
             })
     }
 
+    const [showAlert, setShowAlert] = useState(false)
+    const [Msg, setMsg] = useState("")
+    const [variant, setVariant] = useState("danger")
+
     return (
         <div className="start">
+            <Progress isAnimating={state.isAnimating} key={state.key} />
             <div className="wrapper">
                 <div id="login">
                     <div className="container">
@@ -63,6 +100,9 @@ export default function Signup() {
                                 <h4 className="text-center"> <i className="fa fa-wallet"></i> wallet </h4>
                                 <br />
                                 <form onSubmit={handleSubmit}>
+                                    <div className="position-fixed top-0">
+                                        <CustomAlert variant={variant} show={showAlert} errMsg={Msg} onDismiss={() => setShowAlert(false)}/>
+                                    </div>
                                     <FormInput label="First Name" type="text"/>
                                     <FormInput label="Last Name" type="text"/>
                                     <FormInput label="Username" type="text"/>

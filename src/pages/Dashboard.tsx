@@ -63,6 +63,7 @@ export default function Dashboard() {
     const fetchTransactions = async (wlid: string) => {
         try {
             const response = await apiClient.get(`/transaction/fetch/${wlid}`)
+            localStorage.setItem('transactions', JSON.stringify(response.data.data))
             setTransactions(response.data.data)
         } catch (error) {
             console.error(error)
