@@ -3,6 +3,7 @@ import layout from './layouts/layout'
 import Activity from './pages/Activity'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
+import Settings from './pages/Settings'
 import Signup from './pages/Signup'
 
 let rootRoute = new RootRoute()
@@ -37,12 +38,19 @@ const activityRoute = new Route({
     component: Activity
 })
 
+const settingsRoute = new Route({
+    getParentRoute: () => layoutRoute,
+    path: '/settings',
+    component: Settings
+})
+
 const routeTree = rootRoute.addChildren([
     loginRoute,
     signUpRoute,
     layoutRoute.addChildren([
         indexRoute,
-        activityRoute
+        activityRoute,
+        settingsRoute
     ]),
 ])
 

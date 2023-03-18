@@ -66,8 +66,7 @@ export default function Dashboard() {
         fetchWallets()
     }, [])
 
-    return<div id="homepage">
-            <div className="topBG">
+    return  <div className="topBG">
                 <div className="container">
                     <h2 className="page-title"> Home </h2>
                     <div className="wallet-card">
@@ -104,6 +103,4 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-        </div>
-
 }

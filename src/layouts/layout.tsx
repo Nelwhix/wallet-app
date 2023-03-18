@@ -3,7 +3,9 @@ import { Link, Outlet } from "@tanstack/react-router";
 export default function layout() {
 
     return <div className="wrapper">
-        <Outlet />
+        <div id="homepage">
+            <Outlet />
+        </div>
         <nav>
             <Link
                 to="/"
@@ -24,9 +26,15 @@ export default function layout() {
                 <i className="far fa-chart-bar"></i><span>Activity</span>
             </Link>
 
-            <a className="nav-item" href="user.html">
-                <i className="far fa-user"></i><span>User</span>
-            </a>
+            <Link 
+                className="nav-item" 
+                to="/settings"
+                activeProps={{
+                    className: 'active',
+                }}
+            >
+                <i className="far fa-user"></i><span>Settings</span>
+            </Link>
 
         </nav>
     </div>
