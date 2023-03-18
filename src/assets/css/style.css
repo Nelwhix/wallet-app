@@ -593,3 +593,7 @@ h1, .h1 {
     background-color: #FFF;
     padding: 15px;
 }
+
+    .pt-20 {
+        padding-top: 20px;
+    }

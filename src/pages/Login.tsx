@@ -23,7 +23,7 @@ export default function Login() {
                 localStorage.setItem('user', JSON.stringify(res.data.info.user))
 
                 router.navigate({
-                    from: '/login',
+                    from: '/login#',
                     to: '/'
                 })
             })
@@ -41,7 +41,7 @@ export default function Login() {
                     <div className="container">
                         <div className="page-content text-white">
                             <div className="loginPG">
-                                <div className="logo text-center"> <img src="/images/tutu-sm-white.svg" width="200" />  </div>
+                                <div className="logo text-center pt-20"> <img src="/images/tutu-sm-white.svg" width="200" />  </div>
                                 <br />
                                 <h4 className="text-center"> <i className="fa fa-wallet"></i> wallet </h4>
                                 <br />

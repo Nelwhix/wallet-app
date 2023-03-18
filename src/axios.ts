@@ -3,7 +3,7 @@ import axios from "axios"
 const token = localStorage.getItem('token') ?? ""
 
 const apiClient = axios.create({
-    baseURL: "https://lab.aibox.systems/tutu/v1/engine",
+    baseURL: import.meta.env.VITE_TUTU_BASE_URL,
     headers: {
         'X-Channel': 'api',
         'X-Timestamp': (Date.now()/1000).toFixed(0),

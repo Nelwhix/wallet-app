@@ -1,31 +1,37 @@
 import { router } from "../router"
-import { FormEvent, useState } from "react"
+import { ChangeEvent, useState } from "react"
+import { Link } from "@tanstack/react-router"
+
+// declare module 'react' {
+//     interface ChangeEvent {
+//         target: {
+//             files: Array<File>
+//         }
+//     }
+// }
 
 export default function Settings() {
 
     function logout() {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-
-        router.navigate({
-            from: '/settings',
-            to: '/login'
-        })
     }
 
     const [avatarStyle, setAvatarStyle] = useState({
         backgroundImage:  "url('https://lab.aibox.systems/tutu/v1/daemon/image/identicon/:ref')"
     })
 
-    function handleFileUpload(e: InputEvent) {
+    function handleFileUpload(e: ChangeEvent<HTMLInputElement>) {
         const fileURL = e.target.files[0]
         setAvatarStyle({
             backgroundImage: `url(${URL.createObjectURL(fileURL)})`
         })
     }
 
+   
+
     return <div className="container">
-            <h2 className="page-title text-dark pt-30"> User </h2>
+            <h2 className="page-title text-dark pt-30"> Settings </h2>
             <div className="page-content">
                 <div className="User">
                     <div className="user-p">
@@ -51,7 +57,7 @@ export default function Settings() {
                                     <a href="#"> <i className="fa fa-wallet"></i>&nbsp;&nbsp; Wallet settings </a>
                                 </li>
                                 <li>
-                                    <a onClick={logout} href="#"> <i className="fa fa-power-off"></i>&nbsp;&nbsp; LogOut </a>
+                                    <Link to="/login" onClick={logout}> <i className="fa fa-power-off"></i>&nbsp;&nbsp; LogOut </Link>
                                 </li>
                             </ul>
                         </div>

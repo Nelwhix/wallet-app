@@ -5,6 +5,7 @@ import { formatMoney } from "../helpers"
 import { useEffect, useState } from "react"
 import Transactions from "../components/Transactions"
 import WalletDropDown from "../components/WalletDropdown"
+import { router } from '../router'
 
 
 export default function Dashboard() {
@@ -50,6 +51,12 @@ export default function Dashboard() {
             setWalletArray(result)
         } catch (error) {
             console.log(error)
+            if (error.response.status === 401) {
+                router.navigate({
+                    from: '/',
+                    to: '/login'
+                })
+            }
         }
     }
 
