@@ -4,12 +4,14 @@ const token = localStorage.getItem('token') ?? ""
 
 const apiClient = axios.create({
     baseURL: import.meta.env.VITE_TUTU_BASE_URL,
+    withCredentials: true,
     headers: {
         'X-Channel': 'api',
         'X-Timestamp': (Date.now()/1000).toFixed(0),
         'X-Require': import.meta.env.VITE_PLATFORM_ID,
         'X-Api-Key': import.meta.env.VITE_TUTU_API_KEY,
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'X-Requested-With': 'XMLHttpRequest',
     }
 })
 
