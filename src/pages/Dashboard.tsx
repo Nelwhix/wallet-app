@@ -6,7 +6,9 @@ import { useEffect, useState } from "react"
 import Transactions from "../components/Transactions"
 import WalletDropDown from "../components/WalletDropdown"
 import { router } from '../router'
-
+import TransferModal from "../components/dashboard/TransferModal";
+import ReceiveModal from "../components/dashboard/ReceiveModal";
+import { QrReader } from 'react-qr-reader'
 
 export default function Dashboard() {
     const [wallets, setWallets] = useState({
@@ -28,19 +30,25 @@ export default function Dashboard() {
         value: 0,
         type: 1
     }])
-
     const [walletArray, setWalletArray] = useState([{
         currency: 0,
         name: "",
         wlid: "",
         balance: 0
     }])
+    const [url, setUrl] = useState("")
+    const [qrData, setQrData] = useState("No result")
 
     const fetchWallets = async () => {
         try {
-            const response = await apiClient.get('/core/welcome')
+            const response = await apiClient.get('/core/welcome', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
             setWallets(response.data.info.wallets)
             fetchTransactions(response.data.info.wallets.primary.wlid)
+            fetchQrCode(response.data.info.wallets.primary.wlid)
 
             const result = []
             result.push(response.data.info.wallets.primary)
@@ -51,6 +59,7 @@ export default function Dashboard() {
             setWalletArray(result)
         } catch (error) {
             console.log(error)
+            // @ts-ignore
             if (error.response.status === 401) {
                 router.navigate({
                     from: '/',
@@ -62,12 +71,36 @@ export default function Dashboard() {
 
     const fetchTransactions = async (wlid: string) => {
         try {
-            const response = await apiClient.get(`/transaction/fetch/${wlid}`)
+            const response = await apiClient.get(`/transaction/fetch/${wlid}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
             localStorage.setItem('transactions', JSON.stringify(response.data.data))
             setTransactions(response.data.data)
         } catch (error) {
             console.error(error)
         }
+    }
+
+    async function fetchQrCode(wlid: string) {
+        apiClient.get(`/wallet/receive/${wlid}`, {
+            responseType: 'blob',
+            params: {
+                fg: '000000',
+                bg: 'FFFFFF',
+                size: 256
+            },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then(res => {
+            setUrl(URL.createObjectURL(res.data))
+        }).catch((err) => {
+            console.error(err)
+        })
+
+
     }
 
     useEffect(() => {
@@ -110,5 +143,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
+                <TransferModal />
+                <ReceiveModal url={url} />
             </div>
 }

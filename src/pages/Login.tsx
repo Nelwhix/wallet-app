@@ -30,13 +30,11 @@ export default function Login() {
                 localStorage.setItem('token', res.data.info.token)
                 localStorage.setItem('user', JSON.stringify(res.data.info.user))
 
-                setTimeout(() => {
-                    stopLoader()
-                    router.navigate({
-                        from: '/login',
-                        to: '/'
-                    })
-                }, 3000)
+                stopLoader()
+                router.navigate({
+                    from: '/login',
+                    to: '/'
+                })
             })
             .catch((err) => {
                 stopLoader()

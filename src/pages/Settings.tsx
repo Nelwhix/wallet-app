@@ -46,7 +46,7 @@ export default function Settings() {
                                 </div>
                                
                             </div>
-                            <p className="mt-2" style={{marginLeft: '20px'}}>@{user.username}</p>
+                            <p className="mt-2">@{user.username}</p>
                         </div>
                     </div>
                     
