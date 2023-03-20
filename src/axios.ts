@@ -8,6 +8,7 @@ const apiClient = axios.create({
         'X-Require': import.meta.env.VITE_PLATFORM_ID,
         'X-Api-Key': import.meta.env.VITE_TUTU_API_KEY,
         'X-Requested-With': 'XMLHttpRequest',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
 })
 

@@ -47,7 +47,7 @@ export default function Signup() {
                 }
             ],
             security: {
-                padlock: "000000",
+                padlock: form.get('padlock'),
                 password: form.get('Password'),
             },
             mode: {
@@ -108,6 +108,21 @@ export default function Signup() {
                                     <FormInput label="Username" type="text"/>
                                     <FormInput label="Email Address" type="email"/>
                                     <FormInput label="Mobile" type="tel"/>
+
+                                    <div className="mb-3 password-group">
+                                        <label htmlFor="Padlock" className="form-label">
+                                            Padlock&nbsp;
+                                            <span
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title="secret pin to approve transactions">
+                                                <i className="fa-solid fa-circle-info"></i>
+                                            </span>
+                                        </label>
+                                        <input type={'number'} className="cus-input" id='padlock'
+                                               name='padlock'/>
+                                    </div>
+
                                     <Password label="Password" />
                                     <Password label="Confirm Password" />
                                     

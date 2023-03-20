@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Settings from './pages/Settings'
 import Signup from './pages/Signup'
+import ScanQrCode from "./pages/ScanQrCode";
 
 let rootRoute = new RootRoute()
 
@@ -44,13 +45,20 @@ const settingsRoute = new Route({
     component: Settings
 })
 
+const scanRoute = new Route({
+    getParentRoute: () => layoutRoute,
+    path: '/scan',
+    component: ScanQrCode
+})
+
 const routeTree = rootRoute.addChildren([
     loginRoute,
     signUpRoute,
     layoutRoute.addChildren([
         indexRoute,
         activityRoute,
-        settingsRoute
+        settingsRoute,
+        scanRoute
     ]),
 ])
 

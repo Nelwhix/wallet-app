@@ -1,8 +1,9 @@
 
-export default function TransferModal() {
 
-    return   <div className="modal fade" id="transferModal" tabIndex={-1} aria-labelledby="exampleModalLabel"
-                  aria-hidden="true">
+export default function TransferWithUserName() {
+
+    return <div className="modal fade" id="transferModal" tabIndex={-1} aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
         <div className="modal-dialog bottom-modal">
             <div className="modal-content">
                 <div className="modal-header">
@@ -11,10 +12,10 @@ export default function TransferModal() {
                 </div>
                 <div className="modal-body">
                     <div className="form-group mb-3">
-                        <label> Receiver <span className="ast" data-bs-toggle="tooltip" data-bs-placement="top"
+                        <label> Reciever <span className="ast" data-bs-toggle="tooltip" data-bs-placement="top"
                                                title="important">*</span> </label>
                         <input type="text" className="form-control fm"
-                               placeholder="@username or wallet ID of beneficiary" required />
+                               placeholder="@username or wallet ID of benefecial" required />
                     </div>
                     <div className="form-group mb-3 text-center">
                         <label> Enter Amount </label>
@@ -25,7 +26,6 @@ export default function TransferModal() {
                         <button type="button" className="cusbtn ">Transfer</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

@@ -1,2 +1,10 @@
+.qrScanner {
+    margin-top: 50px;
+    display: grid;
+    place-content: center;
+}
 
+.qrScanner video {
+    width: 300px;
+}
 

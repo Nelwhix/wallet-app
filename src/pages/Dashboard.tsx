@@ -6,9 +6,9 @@ import { useEffect, useState } from "react"
 import Transactions from "../components/Transactions"
 import WalletDropDown from "../components/WalletDropdown"
 import { router } from '../router'
-import TransferModal from "../components/dashboard/TransferModal";
 import ReceiveModal from "../components/dashboard/ReceiveModal";
-import { QrReader } from 'react-qr-reader'
+import {Link} from "@tanstack/react-router";
+import TransferWithUserName from "../components/dashboard/TransferWithUsername";
 
 export default function Dashboard() {
     const [wallets, setWallets] = useState({
@@ -37,7 +37,7 @@ export default function Dashboard() {
         balance: 0
     }])
     const [url, setUrl] = useState("")
-    const [qrData, setQrData] = useState("No result")
+
 
     const fetchWallets = async () => {
         try {
@@ -119,7 +119,7 @@ export default function Dashboard() {
                         <div className="wallet-bm">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#transferModal"> <i className="fa fa-paper-plane"></i>&nbsp; Transfer </a> &nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#" data-bs-toggle="modal" data-bs-target="#receiveModal"> <i className="fa fa-hand-holding-heart"></i>&nbsp; Receive </a> &nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="#"> <i className="fa fa-qrcode"></i>&nbsp; Scan </a>
+                            <Link to="/scan"> <i className="fa fa-qrcode"></i>&nbsp; Scan </Link>
                         </div>
 
                         <div className="elx">
@@ -143,7 +143,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-                <TransferModal />
+                <TransferWithUserName />
                 <ReceiveModal url={url} />
             </div>
 }
