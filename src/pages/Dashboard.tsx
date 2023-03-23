@@ -2,13 +2,14 @@ import Lottie from 'react-lottie-player'
 import walletJson from '../assets/json/wallet-anima.json'
 import apiClient from "../axios"
 import { formatMoney } from "../helpers"
-import { useEffect, useState } from "react"
+import {FormEvent, useEffect, useState} from "react"
 import Transactions from "../components/Transactions"
 import WalletDropDown from "../components/WalletDropdown"
 import { router } from '../router'
 import ReceiveModal from "../components/dashboard/ReceiveModal";
 import {Link} from "@tanstack/react-router";
 import TransferWithUserName from "../components/dashboard/TransferWithUsername";
+import Progress from "../components/Progress";
 
 export default function Dashboard() {
     const [wallets, setWallets] = useState({
@@ -46,8 +47,10 @@ export default function Dashboard() {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
+            const wlid = response.data.info.wallets.primary.wlid
+            localStorage.setItem('wlid', wlid)
             setWallets(response.data.info.wallets)
-            fetchTransactions(response.data.info.wallets.primary.wlid)
+            fetchTransactions(wlid)
             fetchQrCode(response.data.info.wallets.primary.wlid)
 
             const result = []
@@ -103,11 +106,63 @@ export default function Dashboard() {
 
     }
 
+    async function startTransfer(e: FormEvent) {
+
+    }
+
     useEffect(() => {
         fetchWallets()
     }, [])
 
+    async function startTransfer(e: FormEvent) {
+        e.preventDefault()
+        startLoader()
+
+        const form = new FormData(e.target as HTMLFormElement)
+
+        const data = {
+            ref: '?',
+            wlid: localStorage.getItem('wlid'),
+            username: form.get('username'),
+            narration: form.get('narration'),
+            amount: +form.get('amount') * 100,
+            padlock: form.get('padlock')
+        }
+
+        try {
+            const res = apiClient.post('/wallet/transfer/username', data, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            stopLoader()
+        } catch (err) {
+            console.info(err)
+            stopLoader()
+        }
+    }
+
+    const [state, setState] = useState({
+        isAnimating: false,
+        key: 0
+    })
+
+    function startLoader() {
+        setState({
+            isAnimating: true,
+            key: 1
+        })
+    }
+
+    function stopLoader() {
+        setState({
+            isAnimating: false,
+            key: 0
+        })
+    }
+
     return  <div className="topBG">
+        <Progress isAnimating={state.isAnimating} key={state.key} />
                 <div className="container">
                     <h2 className="page-title"> Home </h2>
                     <div className="wallet-card">
@@ -143,7 +198,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-                <TransferWithUserName />
+                <TransferWithUserName handleSubmit={startTransfer} />
                 <ReceiveModal url={url} />
             </div>
 }

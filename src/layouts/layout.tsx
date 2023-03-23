@@ -1,6 +1,9 @@
 import { Link, Outlet } from "@tanstack/react-router";
+import Progress from "../components/Progress";
+import {useState} from "react";
 
 export default function layout() {
+
 
     return <div className="wrapper">
         <div id="homepage">

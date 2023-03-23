@@ -1,3 +1,4 @@
+import React from "react";
 
 
 export default function Container({ animationDuration, children, isFinished}: ContainerProps) {
@@ -15,6 +16,6 @@ export default function Container({ animationDuration, children, isFinished}: Co
 
 interface ContainerProps {
     animationDuration: number,
-    children: Array<JSX.Element>
+    children: React.ReactNode
     isFinished: boolean
 }

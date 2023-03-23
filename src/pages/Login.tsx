@@ -6,17 +6,23 @@ import FormInput from '../components/FormInput'
 import CustomAlert from '../components/CustomAlert'
 import { router } from '../router'
 import Progress from '../components/Progress'
+import { useSelector, useDispatch } from 'react-redux'
+import { 
+    start, 
+    stop,
+    selectIsAnimating,
+    selectKey 
+} from '../stores/index'
 
 
 export default function Login() {
-    const [state, setState] = useState({
-        isAnimating: false,
-        key: 0
-    })
+    const isAnimating = useSelector(selectIsAnimating)
+    const key = useSelector(selectKey)
+    const dispatch = useDispatch()
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault()
-        startLoader()
+        dispatch(start())
 
         const form = new FormData(e.target as HTMLFormElement)
 
@@ -30,14 +36,14 @@ export default function Login() {
                 localStorage.setItem('token', res.data.info.token)
                 localStorage.setItem('user', JSON.stringify(res.data.info.user))
 
-                stopLoader()
+                dispatch(stop())
                 router.navigate({
                     from: '/login',
                     to: '/'
                 })
             })
             .catch((err) => {
-                stopLoader()
+                dispatch(stop())
                 if (err.response) {
                     setErrMsg(err.response.data.message)
                     setShowAlert(true)
@@ -45,26 +51,12 @@ export default function Login() {
             })
     }
 
-    function startLoader() {
-        setState({
-            isAnimating: true,
-            key: 1
-        })
-    }
-
-    function stopLoader() {
-        setState({
-            isAnimating: false,
-            key: 0
-        })
-    }
-
     const [showAlert, setShowAlert] = useState(false)
     const [errMsg, setErrMsg] = useState("")
 
     return (
         <div className="start">
-            <Progress isAnimating={state.isAnimating} key={state.key} />
+            <Progress isAnimating={isAnimating} key={key} />
             <div className="wrapper">
                 <div id="login">
                     <div className="container">

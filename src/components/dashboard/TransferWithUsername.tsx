@@ -1,6 +1,6 @@
 
 
-export default function TransferWithUserName() {
+export default function TransferWithUserName({ handleSubmit }: TWUProps) {
 
     return <div className="modal fade" id="transferModal" tabIndex={-1} aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -11,22 +11,35 @@ export default function TransferWithUserName() {
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
-                    <div className="form-group mb-3">
-                        <label> Reciever <span className="ast" data-bs-toggle="tooltip" data-bs-placement="top"
-                                               title="important">*</span> </label>
-                        <input type="text" className="form-control fm"
-                               placeholder="@username or wallet ID of benefecial" required />
-                    </div>
-                    <div className="form-group mb-3 text-center">
-                        <label> Enter Amount </label>
-                        <input type="text" className="form-control amount" data-type="currency"
-                               placeholder="₦1,000,000.00" required pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" />
-                    </div>
-                    <div className="form-group mb-3 text-center">
-                        <button type="button" className="cusbtn ">Transfer</button>
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group mb-3">
+                            <label> Description </label>
+                            <input name={'narration'} type="text" className="form-control fm" required />
+                        </div>
+                        <div className="form-group mb-3">
+                            <label> Receiver  </label>
+                            <input name={'username'} type="text" className="form-control fm"
+                                   placeholder="@username of beneficiary" required />
+                        </div>
+                        <div className="form-group mb-3">
+                            <label> Enter Amount </label>
+                            <input name={'amount'} type="text" className="form-control fm" data-type="currency"
+                                   placeholder="₦1,000,000.00" required  />
+                        </div>
+                        <div className="form-group mb-3">
+                            <label> Padlock </label>
+                            <input name={'padlock'} type="number" className="form-control fm" required />
+                        </div>
+                        <div className="form-group mb-3 text-center">
+                            <button type="submit" className="cusbtn ">Transfer</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+}
+
+interface TWUProps {
+    handleSubmit: () => void
 }
