@@ -7,22 +7,25 @@ const loaderSlice = createSlice({
         key: 0
     },
     reducers: {
-        start: state => {
+        start(state) {
             state.isAnimating = true
             state.key = 1
         },
-        stop: state => {
+        stop(state) {
             state.isAnimating = false
             state.key = 0
         }
     }
 })
 
-export const selectIsAnimating = (state) => state.loader.isAnimating
-export const selectKey = (state) => state.loader.key
-
 export const { start, stop } = loaderSlice.actions
 
-const store = configureStore({
-    reducer: loaderSlice.reducer
+export const store = configureStore({
+    reducer: { 
+        loader: loaderSlice.reducer
+    }
 })
+
+export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>
+

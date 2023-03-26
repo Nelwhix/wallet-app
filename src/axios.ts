@@ -21,7 +21,7 @@ async function refreshTokens() {
         })
         localStorage.setItem('token', res.data.info.token)
     } catch (err) {
-        console.log(err)
+       
     }
 }
 

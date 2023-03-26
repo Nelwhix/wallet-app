@@ -71,7 +71,7 @@ export default function Signup() {
                 })
                 .catch((err) => {
                     stopLoader()
-                    console.log(err)
+                    
                 })
             })
             .catch((err) => {

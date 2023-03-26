@@ -61,7 +61,6 @@ export default function Dashboard() {
 
             setWalletArray(result)
         } catch (error) {
-            console.log(error)
             // @ts-ignore
             if (error.response.status === 401) {
                 router.navigate({

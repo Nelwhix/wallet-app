@@ -6,19 +6,17 @@ import FormInput from '../components/FormInput'
 import CustomAlert from '../components/CustomAlert'
 import { router } from '../router'
 import Progress from '../components/Progress'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { 
     start, 
-    stop,
-    selectIsAnimating,
-    selectKey 
+    stop
 } from '../stores/index'
 
 
 export default function Login() {
-    const isAnimating = useSelector(selectIsAnimating)
-    const key = useSelector(selectKey)
-    const dispatch = useDispatch()
+    const isAnimating = useAppSelector(state => state.loader.isAnimating)
+    const key = useAppSelector(state => state.loader.key)
+    const dispatch = useAppDispatch()
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault()
