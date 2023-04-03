@@ -1,3 +1,4 @@
+import { FormEvent } from "react"
 
 
 export default function TransferWithCode({ name, handleSubmit }: TWCProps) {
@@ -42,5 +43,5 @@ export default function TransferWithCode({ name, handleSubmit }: TWCProps) {
 
 interface TWCProps {
     name: string,
-    handleSubmit: () => void
+    handleSubmit: (e: FormEvent) => Promise<void>
 }

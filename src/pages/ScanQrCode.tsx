@@ -3,12 +3,24 @@ import {FormEvent, useEffect, useState} from "react";
 import apiClient from "../axios";
 import TransferWithCode from "../components/dashboard/TransferWithCode";
 import Progress from "../components/Progress";
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { 
+    start, 
+    stop
+} from '../stores/index'
+import Lottie from 'react-lottie-player'
+import successJson from '../assets/json/verification-successful.json'
+import { formatMoney } from '../helpers/index'
 
 
 export default function ScanQrCode() {
+    const isAnimating = useAppSelector(state => state.loader.isAnimating)
+    const key = useAppSelector(state => state.loader.key)
     const [qrData, setQrData] = useState("")
     const [accName, setAccName] = useState("")
-    const user = JSON.parse(localStorage.getItem('user'))
+    const dispatch = useAppDispatch()
+    const [showSuccess, setShowSuccess] = useState(false)
+    const [amount, setAmount] = useState(0)
 
     const { ref } = useZxing({
         onResult(result) {
@@ -22,16 +34,16 @@ export default function ScanQrCode() {
                 code: qrData
             }).then(res => {
                 setAccName(res.data.info.user.username)
-                document.getElementById('modalBtn').click()
+                document.getElementById('modalBtn')?.click()
             })
     }, [qrData])
 
     async function startTransfer(e: FormEvent) {
         e.preventDefault()
-        startLoader()
+        dispatch(start())
 
         const form = new FormData(e.target as HTMLFormElement)
-
+        setAmount(+form.get('amount') * 100)
         const data = {
             ref: '?',
             wlid: localStorage.getItem('wlid'),
@@ -42,40 +54,28 @@ export default function ScanQrCode() {
         }
 
         try {
-            const res = apiClient.post('/wallet/transfer/code', data, {
+            await apiClient.post('/wallet/transfer/code', data, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
-            stopLoader()
+            document.getElementById('modalBtn')?.click()
+            setShowSuccess(true)
+            dispatch(stop())
         } catch (err) {
             console.info(err)
-            stopLoader()
+            dispatch(stop())
         }
     }
 
-    const [state, setState] = useState({
-        isAnimating: false,
-        key: 0
-    })
-
-    function startLoader() {
-        setState({
-            isAnimating: true,
-            key: 1
-        })
-    }
-
-    function stopLoader() {
-        setState({
-            isAnimating: false,
-            key: 0
-        })
-    }
-
-
-    return <div className="qrScanner">
-        <Progress isAnimating={state.isAnimating} key={state.key} />
+    if (showSuccess) {
+        return <div className="showSuccess">
+                <Lottie speed={0.5} className="lottie" loop animationData={successJson} play style={{ width: 200, height: 200 }} />
+                <p>You have successfully transferred {formatMoney(1, amount)} to {accName}</p>
+        </div>
+    } else {
+        return <div className="qrScanner">
+        <Progress isAnimating={isAnimating} key={key} />
         <video ref={ref} />
         <TransferWithCode name={accName} handleSubmit={startTransfer} />
         <div style={{display: 'none'}}>
@@ -87,4 +87,7 @@ export default function ScanQrCode() {
             </button>
         </div>
     </div>
+    }
+
+  
 }

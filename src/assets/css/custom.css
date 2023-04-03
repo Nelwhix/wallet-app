@@ -8,3 +8,9 @@
     width: 300px;
 }
 
+.showSuccess {
+    background-color: white;
+    height: 100vh;
+    padding-top: 20vh;
+}
+
